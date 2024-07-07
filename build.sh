@@ -26,7 +26,7 @@ echo $HOME
 # Argument parser from https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash/29754866#29754866
 # -allow a command to fail with !’s side effect on errexit
 # -use return value from ${PIPESTATUS[0]}, because ! hosed $?
-! getopt --test > /dev/null 
+! getopt --test > /dev/null
 if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     echo 'I’m sorry, `getopt --test` failed in this environment.'
     exit 1
@@ -76,6 +76,8 @@ while true; do
     esac
 done
 
+$ARCH = "arm64"
+
 if [[ "$ARCH" != "arm64" ]] && [[ "$ARCH" != "arm" ]] && [[ "$ARCH" != "x86" ]]; then
     echo "Wrong architecture"
     exit 4
@@ -102,7 +104,7 @@ function prepare_repos {
       rm -rf "$dname"
     fi
   done
-  
+
   path_modified=false
   patch_applied=false
 

@@ -17,3 +17,4 @@ rtc_build_examples=false
 target_os="android"
 use_gnome_keyring=false
 use_sysroot=false
+is_java_debug = true

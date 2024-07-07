@@ -1,3 +1,4 @@
+
 name: build
 env:
   TZ: Asia/Shanghai
@@ -11,6 +12,54 @@ jobs:
     timeout-minutes: 720
 
     steps:
+      - name: Before freeing up disk space
+        run: |
+          echo "Before freeing up disk space"
+          echo "=============================================================================="
+          df -hT
+          echo "=============================================================================="
+
+      - name: "Optimize Disk Space"
+        uses: "hugoalh/disk-space-optimizer-ghaction@v0.8.1"
+        with:
+          operate_sudo: "True"
+          general_include: ".+"
+          general_exclude: |-
+            ^GCC$
+            ^G\+\+$
+            Java/8
+            LLVM
+            AndroidNDK
+            Java/All
+          docker_include: ".+"
+          docker_prune: "True"
+          docker_clean: "True"
+          apt_prune: "True"
+          apt_clean: "True"
+          homebrew_prune: "True"
+          homebrew_clean: "True"
+          npm_prune: "True"
+          npm_clean: "True"
+          os_swap: "True"
+
+      - name: Freeing up disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 2048
+          swap-size-mb: 1
+          remove-dotnet: 'true'
+          remove-android: 'false'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+
+      - name: Free up disk space complete
+        run: |
+          echo "Free up disk space complete"
+          echo "=============================================================================="
+          df -hT
+          echo "=============================================================================="    
+
       - uses: actions/checkout@v2
       - name: env
         run: |
@@ -84,7 +133,6 @@ jobs:
       - run: java -version
       - run: sudo apt install ninja-build
       - run: $ROOT/build.sh
-
       - run: killall sleep || true
       - name: Uploading APK
         if: hashFiles(env.FLAG_STOP) == ''
@@ -92,4 +140,3 @@ jobs:
         with:
           name: apk-arm64
           path: ./src/out/Default/apks/
-

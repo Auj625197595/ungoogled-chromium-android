@@ -15,7 +15,7 @@ echo $HOME
 # Argument parser from https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash/29754866#29754866
 # -allow a command to fail with !’s side effect on errexit
 # -use return value from ${PIPESTATUS[0]}, because ! hosed $?
-! getopt --test > /dev/null 
+! getopt --test > /dev/null
 if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     echo 'I’m sorry, `getopt --test` failed in this environment.'
     exit 1
@@ -69,30 +69,7 @@ while true; do
     esac
 done
 
-if [[ "$ARCH" != "arm64" ]] && [[ "$ARCH" != "arm" ]] && [[ "$ARCH" != "x86" ]]; then
-    echo "Wrong architecture"
-    exit 4
-fi
 
-if [[ "$TARGET" != "chrome_modern_target" ]] && [[ "$TARGET" != "trichrome_chrome_apk_target" ]] && [[ "$TARGET" != "webview_target" ]] && [[ "$TARGET" != "trichrome_webview_target" ]] && [[ "$TARGET" != "all" ]]; then
-    echo "Wrong target"
-    exit 5
-fi
-
-# 64-bit TriChrome
-if [[ "$ARCH" == "arm64" ]]; then
-  if [[ "$TARGET" == "trichrome_chrome_apk_target" ]]; then
-    TARGET_EXPANDED=${trichrome_chrome_64_apk_target}
-  elif [[ "$TARGET" == "trichrome_webview_target" ]]; then
-    TARGET_EXPANDED=${trichrome_webview_64_target}
-  else
-    TARGET_EXPANDED=${!TARGET}
-  fi
-else
-  TARGET_EXPANDED=${!TARGET}
-fi
-
-echo "arch: $ARCH, target: $TARGET, target expanded: ${TARGET_EXPANDED}, debug: $DEBUG, local sdk: $LOCAL_SDK"
 
 path_modified=false
 patch_applied=false

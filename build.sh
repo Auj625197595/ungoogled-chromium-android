@@ -76,20 +76,6 @@ while true; do
     esac
 done
 
-$ARCH = "arm64"
-
-if [[ "$ARCH" != "arm64" ]] && [[ "$ARCH" != "arm" ]] && [[ "$ARCH" != "x86" ]]; then
-    echo "Wrong architecture"
-    exit 4
-fi
-
-if [[ "$TARGET" != "$chrome_modern_target" ]] && [[ "$TARGET" != "$trichrome_chrome_bundle_target" ]] && [[ "$TARGET" != "$webview_target" ]] && [[ "$TARGET" != "$trichrome_webview_target" ]] && [[ "$TARGET" != "all" ]]; then
-    echo "Wrong target"
-    exit 5
-fi
-
-echo "arch: $ARCH, target: $TARGET, debug: $DEBUG"
-
 
 path_modified=false
 patch_applied=false
